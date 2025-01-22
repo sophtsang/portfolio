@@ -12,22 +12,19 @@ const SudokuGrid = () => {
 
   const validValue = (row, col, value) => {
     const pos = row * 9 + col;
-    for (let i = 0; i < 0; i++) {
-      if ((i + 9 * (pos / 9) !== pos && getPositionValue(i + 9 * (pos / 9)) === value)) {
+    for (let i = 0; i < 9; i++) {
+      if ((i + 9 * (pos / 9) !== pos && grid[(i + 9 * (pos / 9)) % 9][Math.floor((i + 9 * (pos / 9)) / 9)] === value)) {
         return false;
       }
-      if ((9 * i + (pos % 9)) !== pos && getPositionValue(9 * i + (pos % 9)) === value) {
+      if ((9 * i + (pos % 9)) !== pos && grid[(9 * i + (pos % 9)) % 9][Math.floor((9 * i + (pos % 9)) / 9)] === value) {
         return false; 
       }
       if (i < 3) {
         for (let j = 0; j < 3; j++) {
-          if (((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) !== pos && getPositionValue((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) === value) {
+          if (((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) !== pos && grid[((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) % 9][Math.floor(((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) / 9)] === value) {
             return false;
           }
         }
-      }
-      if (pos === 2 && value === 2) {
-        return false;
       }
     }
     return true; 
@@ -41,7 +38,7 @@ const SudokuGrid = () => {
     newGrid[row][col] = value;
     setGrid(newGrid); }
     else {
-    newGrid[row][col] = 9;
+    newGrid[row][col] = 0;
     setGrid(newGrid);
     }
   };
