@@ -13,19 +13,19 @@ const SudokuGrid = () => {
   const validValue = (row, col, value) => {
     const pos = row * 9 + col;
     for (let i = 0; i < 9; i++) {
-      if ((i + 9 * (pos / 9) !== pos && grid[(i + 9 * (pos / 9)) % 9][Math.floor((i + 9 * (pos / 9)) / 9)] === value)) {
+      if ((i + 9 * Math.floor(pos / 9) !== pos && grid[(i + 9 * Math.floor(pos / 9)) % 9][Math.floor((i + 9 * Math.floor(pos / 9)) / 9)] === value)) {
         return false;
       }
-      if ((9 * i + (pos % 9)) !== pos && grid[(9 * i + (pos % 9)) % 9][Math.floor((9 * i + (pos % 9)) / 9)] === value) {
-        return false; 
-      }
-      if (i < 3) {
-        for (let j = 0; j < 3; j++) {
-          if (((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) !== pos && grid[((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) % 9][Math.floor(((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) / 9)] === value) {
-            return false;
-          }
-        }
-      }
+      // if ((9 * i + (pos % 9)) !== pos && grid[(9 * i + (pos % 9)) % 9][Math.floor((9 * i + (pos % 9)) / 9)] === value) {
+      //   return false; 
+      // }
+      // if (i < 3) {
+      //   for (let j = 0; j < 3; j++) {
+      //     if (((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) !== pos && grid[((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) % 9][Math.floor(((((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)) / 9)] === value) {
+      //       return false;
+      //     }
+      //   }
+      // }
     }
     return true; 
   }
@@ -35,11 +35,11 @@ const SudokuGrid = () => {
     const newGrid = [...grid];
     newGrid[row] = [...newGrid[row]];
     if (validValue(row, col, value)) {
-    newGrid[row][col] = value;
-    setGrid(newGrid); }
-    else {
-    newGrid[row][col] = 0;
-    setGrid(newGrid);
+      newGrid[row][col] = value;
+      setGrid(newGrid); 
+    } else {
+      newGrid[row][col] = 0;
+      setGrid(newGrid);
     }
   };
 
@@ -57,6 +57,7 @@ const SudokuGrid = () => {
 
   // Handle button click to get value at the given position
   const getPositionValue = () => {
+    console.log("HALO");
     const pos = parseInt(position);
     if (pos >= 0 && pos <= 80) {
       const { row, col } = positionToIndices(pos);
@@ -66,11 +67,12 @@ const SudokuGrid = () => {
       const newCol = [];
       const newBox = [];
       for (let i = 0; i < 9; i++) {
-        newRow.push(i + 9 * (pos / 9));
-        newCol.push(9 * i + (pos % 9));
+        newRow.push(i + 9 * Math.floor(pos / 9));
+        newCol.push(grid[(i + 9 * Math.floor(pos / 9)) % 9][Math.floor((i + 9 * Math.floor(pos / 9)) / 9)]);
+        // newCol.push(9 * i + (pos % 9));
         if (i < 3) {
           for (let j = 0; j < 3; j++) {
-            newBox.push(((pos / 27) * 3 + i) * 9 + ((pos % 9) / 3) * 3 + j)
+            newBox.push((Math.floor(pos / 27) * 3 + i) * 9 + Math.floor((pos % 9) / 3) * 3 + j)
           }
         }
       }
