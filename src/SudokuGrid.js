@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 const SudokuGrid = () => {
   // Initialize a 9x9 grid filled with zeros (empty cells)
   const [grid, setGrid] = useState(Array.from({ length: 9 }, () => Array(9).fill(0)));
+  const [index, setIndex] = useState(Array(81).fill(0));
+  const [notDone, setNotDone] = useState([]);
   const [position, setPosition] = useState('');
   const [positionValue, setPositionValue] = useState(null);
   // List containing all positions of vertices in the same row as vertex in position.
@@ -37,10 +39,13 @@ const SudokuGrid = () => {
   // Update a value in the grid
   const handleChange = (row, col, value) => {
     const newGrid = [...grid];
+    const newIndex = [...index];
     newGrid[row] = [...newGrid[row]];
     if (validValue(row, col, value)) {
       newGrid[row][col] = value;
+      newIndex[row * 9 + col] = value;
       setGrid(newGrid); 
+      setIndex(newIndex);
     } else {
       newGrid[row][col] = 0;
       setGrid(newGrid);
@@ -89,6 +94,19 @@ const SudokuGrid = () => {
       setPositionValue('Invalid position. Please enter a number between 1 and 81.');
     }
   };
+
+  // Once user clicks "SOLVE", fills all empty positions into notDone.
+  const fillNotDone = () => {
+    for (let i = 0; i < 81; i++) {
+      if (index[i] == 0) {
+        notDone.push(i);
+      }
+    }
+  }
+
+  function solve() {
+    
+  }
 
   // Render the grid
   return (
